@@ -1,0 +1,50 @@
+{% extends 'templates/app.twig' %}
+{% block content %}
+<div class="portlet light sub-actionbar">
+ <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.user.index') }}"><i class="fa fa-user" aria-hidden="true"></i>All Users</a>
+</div>
+    <div class="row">
+<div class="portlet light col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
+    <div class="portlet-title">
+        <div class="caption font-green">
+           <i class="icon-user font-green"></i>
+              <span class="caption-subject bold uppercase"> Add User</span>
+         </div>
+    </div>
+    <div class="portlet-body form">
+        <form role="form" autocomplete="off" method="post" action="{{ path_for('admin.user.add') }}">
+             <div class="form-body">
+                  <div class="form-group{{ errors.username ? ' has-error' : '' }}">
+                    <label for="username">User Name</label>
+                      <input type="text" name="username" class="form-control add-user" id="username" placeholder="Enter user name"   value="{{ old.username }}">
+                      {% if  errors.username %}
+                      <span class="help-block">{{ errors.username | first }}</span>
+                      {% endif %}
+                  </div>
+               <div class="form-group{{ errors.email ? ' has-error' : '' }}">
+                     <label for="email">User Email</label>
+                     <input type="email" class="form-control add-user" name="email" id="email" placeholder="Enter user email" value="{{ old.email }}" >
+                     <span class="help-block">{{ errors.email | first }}</span>
+               </div>
+               <div class="form-group{{ errors.password ? ' has-error' : '' }}">
+                       <label for="password">Password</label>
+                      <input type="password" class="form-control add-user" name="password" id="password" placeholder="Enter Password" autocomplete="off">
+                      <span class="help-block">{{ errors.password | first }}</span>
+               </div>
+{#                <div class="form-group{{ errors.confirm_password ? ' has-error' : '' }}">
+                       <label for="confirm_password">Confirm Password</label>
+                      <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Enter Confirm Password" autocomplete="off">
+                      <span class="help-block">{{ errors.confirm_password | first }}</span>
+               </div> #}
+
+               </div>
+                <div class="form-actions noborder text-right">
+                  <a href="{{ path_for('admin.user.index') }}" class="btn btn-default">Cancel</a>
+                  <button type="submit" class="btn blue">Submit</button>
+                </div>
+                {{ csrf.field | raw }}
+          </form>
+         </div>
+         </div>
+     </div>
+{% endblock %}

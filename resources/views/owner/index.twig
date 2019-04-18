@@ -1,0 +1,54 @@
+{% extends 'templates/owner_app.twig' %}
+
+{% block content %}
+	   <div class="row">
+            <div class="col-md-6 ">
+                <!-- BEGIN Portlet PORTLET-->
+                <div class="portlet box tommy-bg">
+                    <div class="portlet-title text-color-primary">
+                        <div class="caption">
+                            <i class="fa fa-id-card fa-2x text-color-primary"></i>Owner Details</div>
+                        </div>
+                        <div class="portlet-body owner">
+                        	<h2>Owner Code: {{ owner.code }}</h2>
+                            <h2>Full Name : {{ owner.full_name }}</h2>
+                            <h2>Address : {{ owner.address }}</h2>
+                            <h2>Opening Balance : $ {{ owner.opening_balance }}</h2>
+                            <h2>Current Balance : $ {{ owner.current_balance }}</h2>
+                            <h2>Phone Home : <a href="tel:{{ owner.phone_home }}">{{ owner.phone_home }}</a></h2>
+                            <h2>Phone Mobile : <a href="tel:{{ owner.phone_mobile }}">{{ owner.phone_mobile }}</a></h2>
+                            <h2>Primary Email (Email 1) : <a href="mailto:{{ owner.email_1 }}">{{ owner.email_1 }}</a></h2>
+                            <h2>Email 2 : <a href="mailto:{{ owner.email_2 }}">{{ owner.email_2 }}</a></h2>
+                        </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+                        </div>
+            </div>
+        <h2>All Properties</h2>
+        {% for row in owner.properties|batch(2) %}
+        
+        <div class="row">
+            {% for property in row %}
+            <div class="col-md-6 ">
+            <!-- BEGIN Portlet PORTLET-->
+                <div class="portlet box tommy-bg">
+                    <div class="portlet-title text-color-primary">
+                        <div class="caption"><i class="fa fa-home fa-2x text-color-primary"></i>Property Details</div>
+                    </div>
+                    <div class="portlet-body owner">
+                        <h2>Property Code: {{ property.code }}</h2>
+                        <h2>Full Address : {{ property.getCommaAddress() }}</h2>
+                        <h2>Property Opening Balance : $ {{ property.opening_balance }}</h2>
+                        <h2>Property Current Balance : $ {{ property.current_balance }}</h2>
+                        <h2>Property Rent : $ {{ property.rental_amount ~ " / " ~ property.rental_period }}</h2>
+                        <h2>Agent Full Name : {{ property.agent_full_name }} </h2>
+                        <h2>Agent Email 1 : <a href="mailto:{{ property.agent_email_1 }}">{{ property.agent_email_1 }}</a></h2>
+                       <a style="color:#333;" class="btn btn-tommy" href="{{ path_for('owner.property', {'id':property.id,'propertycode':property.code}) }}">View Inspections</a>
+                    </div>
+                </div>
+            <!-- END Portlet PORTLET-->
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+{% endblock %}

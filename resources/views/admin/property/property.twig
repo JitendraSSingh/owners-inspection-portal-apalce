@@ -1,0 +1,106 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+    <div class="row">
+
+            <div class="col-md-6 ">
+                <!-- BEGIN Portlet PORTLET-->
+                <div class="portlet box tommy-bg">
+                    <div class="portlet-title text-color-primary">
+                        <div class="caption">
+                            <i class="fa fa-id-card fa-2x text-color-primary"></i>Owner Details</div>
+                        </div>
+                        <div class="portlet-body owner">
+                            <h2>Owner Code: {{ owner.code }}</h2>
+                            <h2>Full Name : {{ owner.full_name }}</h2>
+                            <h2>Address : {{ owner.address }}</h2>
+                            <h2>Opening Balance : $ {{ owner.opening_balance }}</h2>
+                            <h2>Current Balance : $ {{ owner.current_balance }}</h2>
+                            <h2>Phone Home : <a href="tel:{{ owner.phone_home }}">{{ owner.phone_home }}</a></h2>
+                            <h2>Phone Mobile : <a href="tel:{{ owner.phone_mobile }}">{{ owner.phone_mobile }}</a></h2>
+                            <h2>Primary Email (Email 1) : <a href="mailto:{{ owner.email_1 }}">{{ owner.email_1 }}</a></h2>
+                            <h2>Email 2 : <a href="mailto:{{ owner.email_2 }}">{{ owner.email_2 }}</a></h2>
+                            <button class="btn blue sendPasswordLink" data-sendpasswordlink="{{ path_for('admin.sendpasswordlink',{'ownerId':owner.id, 'ownerCode':owner.code}) }}" type="button">Send Password Link</button>
+                            <a href="{{ path_for('admin.setpassword',{'id':owner.id,'ownercode':owner.code }) }}" class="btn blue" type="button">Set Password Manually</a>
+                        </div>
+                </div>                            <!-- END Portlet PORTLET-->
+            </div>
+    </div>
+{# 
+        <div class="portlet light sub-actionbar">
+            <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.landlords') }}"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</a>
+              
+        </div> #}
+        <h2>All Properties</h2>
+        {% for row in properties|batch(2) %}
+        
+        <div class="row">
+            {% for property in row %}
+            <div class="col-md-6 ">
+            <!-- BEGIN Portlet PORTLET-->
+                <div class="portlet box tommy-bg">
+                    <div class="portlet-title text-color-primary">
+                        <div class="caption"><i class="fa fa-home fa-2x text-color-primary"></i>Property Details</div>
+                    </div>
+                    <div class="portlet-body owner">
+                        <h2>Property Code: {{ property.code }}</h2>
+                        <h2>Full Address : {{ property.full_address }}</h2>
+                        <h2>Property Opening Balance : $ {{ property.opening_balance }}</h2>
+                        <h2>Property Current Balance : $ {{ property.current_balance }}</h2>
+                        <h2>Property Rent : $ {{ property.rental_amount ~ " / " ~ property.rental_period }}</h2>
+                        <h2>Agent Full Name : {{ property.agent_full_name }} </h2>
+                        <h2>Agent Email 1 : <a href="mailto:{{ property.agent_email_1 }}">{{ property.agent_email_1 }}</a></h2>
+                        <h2>Agent Email 2 : <a href="mailto:{{ property.agent_email_2 }}">{{ property.agent_email_2 }}</a></h2>
+                        <a style="color:#333;margin-right:16px;" class="btn btn-tommy" href="{{ path_for('admin.inspections.add',{'propertyid':property.id}) }}">Add Inspection</a><a style="color:#333;" class="btn btn-tommy" href="{{ path_for('admin.search.property.view.propertyid',{'propertyid':property.id}) }}">View More</a>
+                    </div>
+                </div>
+            <!-- END Portlet PORTLET-->
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+     {#    <div class="portlet light sub-actionbar">
+            <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.landlords') }}"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</a>
+                
+        </div> #}
+{% endblock %}
+{% block ajaxSendPasswordLinkScript %}
+    <script>
+        jQuery(document).ready(function($){
+            $(".sendPasswordLink").on("click", function(){
+                var btn = $(this);
+                var defaultBtnHtml = btn.html();
+                var defaultBtnClass = btn.attr('class');
+                var successBtnClass = "btn btn-success";
+                var failureBtnClass = "btn btn-danger";
+                var url = btn.data("sendpasswordlink");
+              $.ajax({
+                url: url,
+                async:true,
+                beforeSend:function(){
+                    btn.html('Sending...');
+                    btn.prop('disabled',true);
+                    //alert("Sending");
+                },
+                success:function(result,textStatus,jqXHR){
+                    btn.addClass(successBtnClass).removeClass("blue");
+                    btn.html(defaultBtnHtml);
+                    btn.prop('disabled',false);
+                    console.log(result);
+                    console.log(textStatus);
+                    console.log(jqXHR);
+                },
+                statusCode: {
+                    404: function(){
+                    btn.addClass(failureBtnClass).removeClass("blue");
+                    btn.html('Password Link Failed');
+                    btn.prop('disabled',false);
+                    }
+                }
+              });
+            });
+        });
+    </script>
+{% endblock %}
+
+

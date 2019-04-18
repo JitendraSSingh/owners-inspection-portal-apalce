@@ -1,0 +1,364 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+		<div class="portlet light sub-actionbar">
+                {# <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.search.property.view.propertyid',{'propertyid': inspection.property_id}) }}"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</a> #}
+                <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.inspections.view',{'id':inspection.id,'propertyid': inspection.property_id}) }}"><i class="fa fa-eye" aria-hidden="true"></i>View</a>
+        </div>
+		<div class="portlet light ">
+        <div class="portlet-title">
+            <div class="caption font-green-haze">                                
+            <span class="caption-subject bold uppercase"> Edit Inspection</span>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form role="form" class="form-horizontal" enctype="multipart/form-data" method="post" action="{{ path_for('admin.inspections.edit',{'id':inspection.id,'propertyid': property.id }) }}"> 
+            <div class="form-body">
+               <div class="col-sm-12 col-md-12 col-lg-12 no-border">
+                <div class="form-group form-md-line-input">
+                    <label class="control-label col-md-3" for="scrollable-dropdown-address">Search Property Full Address : </label>
+                    <div class="col-md-8">
+                    <div class="input-group col-md-8">
+                    <div id="scrollable-dropdown-menu" class="form-control input-lg col-md-8">
+                    <input class="typeahead form-control" type="text" placeholder="Full Address" name="full_address" required="required" id="scrollable-dropdown-address" value="{{ property.full_address }}">
+                    </div> 
+                    </div>
+                    </div>
+                    </div>
+        <div class="form-group form-md-line-input">
+            <label class="col-md-3 control-label" for="property_code">Property Code : </label>
+                <div class="col-md-3">
+                <input type="text" class="form-control" id="property_code" name="property_code" value="{{ property.code }}" required="required">
+                    <div class="form-control-focus"> </div>
+                </div>
+            </div>
+
+										<div class="form-group form-md-line-input">
+                                                <label class="control-label col-md-3" for="date_time">Date and Time : </label>
+                                                <div class="col-md-3">
+                                                    <div id="datetimepicker1" class="input-group date form_datetime form_datetime bs-datetime">
+                                                        <input type="text" size="16" class="form-control" name="datetimepicker" id="datetimepicker" value="{{ inspection.dateTimeDecode() }}" required="required">
+                                                        <span class="input-group-addon">
+                                                           
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                        </div>
+
+
+                                        <div class="form-group form-md-line-input">
+                                                <label class="col-md-3 control-label" for="short_statement">Inspection By : </label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control" id="short_statement" name="short_statement" value="{{ inspection.short_statement }}" required="required"> 
+                                                    <div class="form-control-focus"> </div>
+                                                </div>
+                                        </div>
+
+                                        <div class="form-body form-group form-md-line-input">
+                                           
+                                                <label class="control-label col-md-3" for="description">Description : </label>
+                                                <div class="col-md-6">
+                                                    <textarea name="description" id="description"> </textarea>
+                                                </div>
+                                            
+                                        </div>
+											
+                                            <div class="form-group form-md-line-input">
+                                                <label class="col-md-3 control-label" for="inspection_images">Upload Images : </label>
+                                                <div class="col-md-3">
+                                                    <input type="file" name="inspection_images[]" class="form-control" id="inspection_images" placeholder="Upload Images" multiple="multiple">
+                                                    <div class="form-control-focus"> </div>
+                                                    <div id="imageCaption"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-md-line-input">
+                                                <label class="col-md-3 control-label" for="attachments">Attachments : </label>
+                                                <div class="col-md-3">
+                                                    <input type="file" name="attachments[]" class="form-control" id="attachments" placeholder="Upload Attachments" multiple="multiple">
+                                                    <div class="form-control-focus"> </div>
+                                                    <div id="fileCaption"></div>
+                                                </div>
+                                            </div>
+            
+            {% if inspection.imageFiles() is not empty %}
+            <div class="form-group form-md-line-input">
+              <label class="col-md-3 col-lg-3 control-label" style="color:red;">Delete Images</label>
+                <div class="col-md-6 col-lg-6">
+                 <div class="mt-checkbox-list">
+                  <p class="alert alert-danger"> Select <b>Images</b> to be <b>Deleted</b> </p>
+                                            
+             {% for row in inspection.imageFiles()|batch(2) %}
+              
+                <div class="row">
+                {% for file in row %}
+                <div class="col-sm-12 col-md-12 col-lg-12"> 
+                    <label class="col-md-12 col-lg-12 mt-checkbox mt-checkbox-outline">
+                    <input type="checkbox" name="delete_images[]" value="{{ file.id }}"> {{ file.name }} 
+                    <span></span>
+                    </label>
+                    <div style="margin-bottom:24px;padding-left:0;" class="col-md-8 col-lg-8">Edit Caption : <input type='text' name='edit_image_file_caption[]' class='form-control' value="{{ file.caption }}"/>
+                    </div>
+
+                    <a target="_blank" title="{{ file.random_name }}" href="{{'/inspectionimages/' ~ file.random_name }}"> 
+                            <img class="thumbnail img-responsive" src="{{'/inspectionimages/' ~ file.random_name }}">
+                    </a>
+                </div>
+                {% endfor %}
+                </div>
+             {% endfor %}
+
+
+                  </div>
+                 </div>
+             </div>
+            {% endif %}                         
+        
+            {% if inspection.attachmentFiles() is not empty %}
+            <div class="form-group form-md-line-input">
+              <label class="col-md-3 control-label" style="color:red;">Delete Files</label>
+                <div class="col-md-6">
+                 <div class="mt-checkbox-list">
+                  <p class="alert alert-danger"> Select <b>Files</b> to be <b>Deleted</b> </p>
+                                            
+             {% for file in inspection.attachmentFiles() %}
+              
+                <div class="form-group">
+                <label class="mt-checkbox mt-checkbox-outline">
+                <input type="checkbox" name="delete_attachfiles[]" value="{{ file.id }}"> {{ file.name }} <a href="{{ path_for('admin.file.view',{ filename : file.random_name}) }}"><i style="margin-left:16px;" class="fa fa-download" aria-hidden="true">Download</i></a>
+                    <span></span>
+                </label>
+                </div>
+
+                <div class="form-group">
+                    <div>Edit File Caption :</div> 
+                <label style="padding-left:0;" class="col-md-6 col-lg-6">
+                <input type='text' name='edit_attachment_file_caption[]' class='form-control' value="{{ file.caption }}"/>
+                </label>
+                </div>
+             {% endfor %}
+            </div>
+            </div>
+             </div>
+            {% endif %}
+
+			<div class="form-group form-md-line-input">
+                <label class="col-md-3 control-label" for="video_url">Video Urls (Youtube / Vimeo) : </label>
+                    <div class="col-md-3 input_fields_wrap">
+                        <button class="add_field_button btn blue">Add More URL's</button>
+                            {% for url in inspection.getUrls() %}
+                                <span>
+                                <input type="text" name="urls[]" class="form-control"  placeholder="Enter Video Url" value="{{ url }}">
+                                <a href="#" class="remove_field">Remove</a></span>
+                            {% endfor %}
+                                                    
+                    <div class="form-control-focus"></div>
+                    </div>
+            </div>                                           
+
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="submit" class="btn blue">Update</button>
+                    </div>
+            </div>
+            </div>
+            {{ csrf.field | raw }}
+            </form>
+            </div>
+            <div class="sub-actionbar">
+               {#  <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.search.property.view.propertyid',{'propertyid': inspection.property_id}) }}"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</a> #} <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.inspections.view',{'id':inspection.id,'propertyid': inspection.property_id}) }}"><i class="fa fa-eye" aria-hidden="true"></i>View</a>
+            </div>
+            </div>
+
+
+{% endblock %}
+
+{% block search %}
+    <script type="text/javascript">
+        jQuery(document).ready(function($){
+
+            $("#resetImageFiles").on("click", function(){
+                $("#inspection_images").val('');
+                $("#imageCaption").html("");
+            });
+
+            function imageCaption(){
+            var images = document.getElementById("inspection_images");
+
+            var imageTextMessage = "";
+            if( 'files' in images ){
+                if(images.files.length == 0){
+                    imageTextMessage ="Select one or more image files.";
+                }else{
+                    for(var i = 0; i < images.files.length; i++){
+                        imageTextMessage += "<br><strong>" + (i+1) + ". file</strong><br>";
+                        var file = images.files[i];
+                        if('name' in images.files[i]){
+                        imageTextMessage += "Name : " + file.name +"<br>";
+                        imageTextMessage += "<br><input type='text' name='image_file_caption[]' class='form-control' placeholder='Enter the Image Caption Here'/>";
+                        }
+                    }
+                }
+            }else{
+                if(images.value == ""){
+                    imageTextMessage += "Select one or more image files.";
+                }
+                else{
+                    imageTextMessage += "The files property is not supported by your browser!";
+                    imageTextMessage += "<br>The path of the selected file: " + images.value; // If the browser does not support the files property, it will return the path of the selected file instead.
+                }
+            }
+            $("#imageCaption").html(imageTextMessage);
+        }
+        
+        function fileCaption(){
+
+            var attachments = document.getElementById("attachments");
+            var fileTextMessage = "";
+            if( 'files' in attachments ){
+                if(attachments.files.length == 0){
+                    fileTextMessage ="Select one or more attachment files.";
+                }else{
+                    for(var i = 0; i < attachments.files.length; i++){
+                        fileTextMessage += "<br><strong>" + (i+1) + ". file</strong><br>";
+                        var file = attachments.files[i];
+                        if('name' in attachments.files[i]){
+                        fileTextMessage += "Name : " + file.name +"<br>";
+                        fileTextMessage += "<br><input type='text' name='attachment_file_caption[]' class='form-control' placeholder='Enter the File Caption Here'/>";
+                        }
+                    }
+                }
+            }else{
+                if(attachments.value == ""){
+                    fileTextMessage += "Select one or more files.";
+                }
+                else{
+                    fileTextMessage += "The files property is not supported by your browser!";
+                    fileTextMessage += "<br>The path of the selected file: " + attachments.value; // If the browser does not support the files property, it will return the path of the selected file instead.
+                }
+            }
+            $("#fileCaption").html(fileTextMessage);
+        }
+
+            $("#inspection_images").on("change", function(){
+
+                imageCaption();
+            });
+            $("#attachments").on("change", function(){
+                fileCaption();
+            });
+
+
+            $.ajax({url: "/admin/rest/property/all", success: function(result,status,xhr){
+
+                    if(status === 'success'){
+
+                        populateAddressTypeahead(result)
+                        
+                    }
+                    
+                }
+            });
+
+            var substringMatcher = function(strs) {
+              return function findMatches(q, cb) {
+                var matches, substringRegex;
+
+                // an array that will be populated with substring matches
+                matches = [];
+
+                // regex used to determine if a string contains the substring `q`
+                substrRegex = new RegExp(q, 'i');
+
+                // iterate through the pool of strings and for any string that
+                // contains the substring `q`, add it to the `matches` array
+                $.each(strs, function(i, str) {
+                  if (substrRegex.test(str)) {
+                    matches.push(str);
+                  }
+                });
+
+                cb(matches);
+              };
+            };
+
+
+            
+            function populateAddressTypeahead(fullAddressArray){
+            $('#scrollable-dropdown-menu .typeahead').typeahead(
+                {
+                    hint: true,
+                    highlight: true,
+                    minLength: 1
+                    
+                },
+                {
+                  name: 'fullAddressArray',
+                  limit: fullAddressArray.length,
+                  source: substringMatcher(fullAddressArray)
+                }
+            );
+
+            }
+
+            $('.typeahead').on('typeahead:selected', function(evt, item) {
+                
+                $.ajax({
+                    
+                    url:"/admin/rest/property/fulladdress/"+item,
+                    type: "get",
+                    
+                    success:function(result,status,xhr){
+                        $('#property_code').val(result[1]);
+                    },
+                    error:function(xhr){
+                       
+                    }
+                
+                });
+                
+            })
+
+            $('#datetimepicker').datetimepicker();
+            var max_fields = 10;
+            var wrapper = $(".input_fields_wrap");
+            var add_more_btn = $(".add_field_button");
+
+            var x = 1;//initlal text box count
+            
+            $(add_more_btn).on("click", function(e){
+                e.preventDefault();
+                if(x < max_fields){
+                    x++;
+                    $(wrapper).append('<span><input type="text" name="urls[]" class="form-control"  placeholder="Enter Video Url"><a href="#" class="remove_field">Remove</a></span>');
+                }
+            });
+
+            $(wrapper).on("click", ".remove_field", function(e){
+                
+                e.preventDefault();
+                
+                $(this).parent('span').remove();
+                
+                x--;
+            });
+
+            $(document).ready(function() {
+              $('#description').summernote();
+              $('#description').summernote('code',{{ inspection.getDescriptionEditHTML() | raw }});
+
+            });
+
+            $('#description').summernote({
+              height: 300,                 // set editor height
+              minHeight: null,             // set minimum height of editor
+              maxHeight: null,             // set maximum height of editor
+              focus: true,                  // set focus to editable area after initializing summernote
+              disableDragAndDrop:true                  
+            });
+
+        });
+    </script>
+{% endblock %}

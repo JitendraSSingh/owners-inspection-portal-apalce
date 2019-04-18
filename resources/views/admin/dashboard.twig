@@ -1,0 +1,22 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+                <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                            <div class="dashboard-stat2 ">
+                                <div class="display">
+                                    <div class="number">
+                                        <h3 class="font-purple-soft">
+                                            <span data-counter="counterup" data-value="{{ pendingNewOwners }}">{{ pendingNewOwners }}</span>
+                                        </h3>
+                                        <small>NEW PENDING OWNERS</small>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="icon-people"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                            
+{% endblock %}

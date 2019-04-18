@@ -1,0 +1,65 @@
+{% extends 'templates/owner_app.twig' %}
+
+{% block content %}
+	   <div class="row">
+            <div class="col-md-6 ">
+                <!-- BEGIN Portlet PORTLET-->
+                <div class="portlet box tommy-bg">
+                    <div class="portlet-title text-color-primary">
+                        <div class="caption">
+                            <i class="fa fa-id-card fa-2x text-color-primary"></i>Property Details</div>
+                        </div>
+                        <div class="portlet-body owner">
+                        	<h2>Property Code: {{ property.code }}</h2>
+                            <h2>Full Address : {{ property.getCommaAddress() }}</h2>
+                            <h2>Property Opening Balance : $ {{ property.opening_balance }}</h2>
+                            <h2>Property Current Balance : $ {{ property.current_balance }}</h2>
+                            <h2>Property Rent : $ {{ property.rental_amount ~ " / " ~ property.rental_period }}</h2>
+                            <h2>Agent Full Name : {{ property.agent_full_name }} </h2>
+                            <h2>Agent Email 1 : <a href="mailto:{{ property.agent_email_1 }}">{{ property.agent_email_1 }}</a></h2>
+                     
+                        </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                            <!-- BEGIN SAMPLE TABLE PORTLET-->
+                            <div class="portlet box tommy-bg inspection">
+                            <div class="portlet-title text-color-primary">
+                                    <div class="caption">
+                                        <i class="fa fa-id-card fa-2x text-color-primary"></i>Inspections</div>
+                            </div>
+                            </div>
+                            <div class="portlet light ">
+
+                                <div class="portlet-body">
+                                    <div class="table-scrollable">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th> Date </th>
+                                                    <th>Short Statement</th>
+                                                    <th colspan="3"> Action </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% for inspection in property.inspections %}
+                                                <tr>
+                                                    <td> {{ inspection.date }}</td>
+
+                                                    <td> {{ inspection.short_statement }} </td>
+                                                    <td> <a class="view-link" href="{{ path_for('owner.inspection', {'propertyid': property.id, 'propertycode': property.code, 'inspectionid':inspection.id }) }}"><i class="fa fa-eye" aria-hidden="true"></i> View</a> </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END SAMPLE TABLE PORTLET-->
+                        </div>
+        </div>
+{% endblock %}

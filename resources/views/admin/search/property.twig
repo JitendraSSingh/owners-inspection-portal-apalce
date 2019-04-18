@@ -1,0 +1,89 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+                            <!-- BEGIN PORTLET-->
+                            <div class="portlet light form-fit ">
+                                <div class="portlet-body form">
+                                    <form action="{{ path_for('admin.search.property.view') }}" id="form-username" class="form-horizontal form-bordered" method="get">
+                                        <div class="form-group">
+                                            
+                                            <div class="col-sm-8 col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 no-border">
+                                                <div class="form-group">
+                                                	<p>Search Property Full Address</p>
+                                                    
+													<div id="scrollable-dropdown-menu" class="form-control input-lg">
+													  <input class="typeahead" type="text" placeholder="Full Address" name="full_address" required="required">
+													</div> 
+                                                </div>
+                                                <p class="pt-6"> E.g: 28 Queen Street</p>
+                                                <button type="submit" class="btn btn-tommy btn-block">View More</button>
+                                            </div>
+                                        </div>
+
+                                       {{ csrf.field | raw }}
+                                    </form>
+
+                                </div>
+                            </div>
+                            <!-- END PORTLET-->
+                            
+{% endblock %}
+
+{% block search %}
+	<script type="text/javascript">
+        jQuery(document).ready(function($){
+
+
+        	$.ajax({url: "/admin/rest/property/all", success: function(result,status,xhr){
+
+	        		if(status === 'success'){
+	        			populateAddressTypeahead(result)
+	        			console.log(result);
+	        		}
+	        		
+        		}
+        	});
+
+        	var substringMatcher = function(strs) {
+			  return function findMatches(q, cb) {
+			    var matches, substringRegex;
+
+			    // an array that will be populated with substring matches
+			    matches = [];
+
+			    // regex used to determine if a string contains the substring `q`
+			    substrRegex = new RegExp(q, 'i');
+
+			    // iterate through the pool of strings and for any string that
+			    // contains the substring `q`, add it to the `matches` array
+			    $.each(strs, function(i, str) {
+			      if (substrRegex.test(str)) {
+			        matches.push(str);
+			      }
+			    });
+
+			    cb(matches);
+			  };
+			};
+
+
+        	
+			function populateAddressTypeahead(fullAddressArray){
+        	$('#scrollable-dropdown-menu .typeahead').typeahead(
+        		{
+        			hint: true,
+  					highlight: true,
+  					minLength: 1
+  					
+        		},
+	        	{
+				  name: 'fullAddressArray',
+				  limit: fullAddressArray.length,
+				  source: substringMatcher(fullAddressArray)
+				}
+			);
+
+        	}
+        });
+    </script>
+{% endblock %}

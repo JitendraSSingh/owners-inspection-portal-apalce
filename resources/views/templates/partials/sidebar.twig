@@ -1,0 +1,131 @@
+            <!-- BEGIN SIDEBAR -->
+            <div class="page-sidebar-wrapper">
+                <!-- END SIDEBAR -->
+                <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+                <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+                <div class="page-sidebar navbar-collapse collapse">
+                    <!-- BEGIN SIDEBAR MENU -->
+                    <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+                    <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+                    <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+                    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+                    <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+                    <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+                    <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+                        <li class="nav-item start ">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-magnifier"></i>
+                                <span class="title">Search Properties</span>
+                                
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start ">
+                                    <a href="{{ path_for('admin.search.property') }}" class="nav-link ">
+                                        <i class="icon-list"></i><span class="title">By Full Address</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-people"></i>
+                                <span class="title">Landlords</span>
+                                
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item start ">
+                                    <a href="{{ path_for('admin.landlords') }}" class="nav-link ">
+                                        <i class="icon-list"></i><span class="title">All Landlords</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-home"></i>
+                                <span class="title">Properties</span>
+                                
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item  ">
+                                    <a href="{{ path_for('admin.properties') }}" class="nav-link ">
+                                        <i class="icon-list"></i><span class="title">All Properties</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-calendar"></i>
+                                <span class="title">Inspections</span>
+                                
+                            </a>
+                            <ul class="sub-menu">
+{#                                 <li class="nav-item  ">
+                                    <a href="{{ path_for('admin.inspections') }}" class="nav-link ">
+                                        <i class="icon-list"></i><span class="title">All Inspections</span>
+                                    </a>
+                                </li> #}
+                                <li class="nav-item  ">
+                                    <a href="{{ path_for('admin.inspections.add') }}" class="nav-link ">
+                                        <i class="icon-plus"></i><span class="title">Add Inspections</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item  ">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-note"></i>
+                                <span class="title">Work Orders</span>
+                                
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item  ">
+                                    <a href="components_date_time_pickers.html" class="nav-link ">
+                                        <i class="icon-list"></i><span class="title">All Work Orders</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item  ">
+                                    <a href="components_date_time_pickers.html" class="nav-link ">
+                                        <i class="icon-plus"></i><span class="title">Add Work Orders</span>
+                                    </a>
+                                </li>
+                               <li class="nav-item  ">
+                                    <a href="components_date_time_pickers.html" class="nav-link ">
+                                        <i class="icon-pencil"></i><span class="title">Edit Work Orders</span>
+                                    </a>
+                                </li>
+                                 <li class="nav-item  ">
+                                    <a href="components_date_time_pickers.html" class="nav-link ">
+                                        <i class="icon-trash"></i><span class="title">Delete Work Orders</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="javascript:;" class="nav-link nav-toggle">
+                                <i class="icon-user"></i>
+                                <span class="title">User</span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="nav-item  ">
+                                    <a href="{{ path_for('admin.user.index') }}" class="nav-link ">
+                                        <i class="icon-list"></i><span class="title">All Users</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ path_for('admin.user.add') }}" class="nav-link ">
+                                        <i class="icon-plus"></i><span class="title">Add User</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!-- END SIDEBAR MENU -->
+                </div>
+                <!-- END SIDEBAR -->
+            </div>
+            <!-- END SIDEBAR -->

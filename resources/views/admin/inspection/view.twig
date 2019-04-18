@@ -1,0 +1,63 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+		<div class="portlet light sub-actionbar">
+                {# <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.search.property.view.propertyid',{'propertyid': inspection.property_id}) }}"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</a> #}
+                <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.inspections.edit',{'id':inspection.id,'propertyid': inspection.property_id}) }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</a>
+        </div>
+		<div class="inspectio-view-container">
+		<h2><b>Address:</b> {{ property.getCommaAddress() }}</h2>
+		<h2><b>Date:</b> {{ inspection.date }}</h2>
+		<h2><b>Property Manager:</b> {{ inspection.short_statement }}</h2>
+		<p><h2><b>Description:</b></h2>
+			<div class='text-description'>{{ inspection.getDescriptionHTML() | raw }}</div>
+		</p>
+		<p>
+			<h2><b>Video:</b> </h2>
+			<ul>
+				{% set i = 1 %}
+			{% for key,url in inspection.urlsDecode() %}
+				<li style="list-style-type:none;">{{ url|youtubeembed(url) | raw}}</li>
+				<figcaption>{{ 'Video No: ' ~ i }}</figcaption>
+				{% set i = i + 1 %}
+			{% endfor %}
+			</ul>
+		</p>
+		<p>
+			<h2><b>Images:</b></h2>
+			{% set i = 1 %}
+			{% for row in inspection.imageFiles()|batch(3) %}
+				<div class="row">
+					{% for file in row %}
+				 	<div class="col-sm-12 col-md-4 col-lg-4">
+						<a target="_blank" title="{{ file.name }}" href="{{'/inspectionimages/' ~ file.random_name }}">
+							<figure style="margin-bottom:16px;">
+							<img class="thumbnail img-responsive" src="{{'/inspectionimages/' ~ file.random_name }}">
+							 <figcaption>{{ 'Image No: ' ~ i }}</figcaption>
+							 <figcaption>{{ file.caption }}</figcaption>
+							</figure>
+						</a>
+					</div>
+					{% set i = i + 1 %}
+				    {% endfor %}
+				</div>
+			{% endfor %}
+		</p>
+		<p>
+			<h2><b>File Attachments:</b></h2>
+			<ul>
+			 {% for file in inspection.attachmentFiles() %}
+
+			 	<li><a href="{{ path_for('admin.file.view',{ filename : file.random_name}) }}">{{ file.name }}</a></li>
+
+			 {% endfor %}
+			</ul>
+		</p>
+		<div class="portlet light sub-actionbar">
+                {# <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.search.property.view.propertyid',{'propertyid': inspection.property_id}) }}"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</a> #}
+                <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.inspections.edit',{'id':inspection.id,'propertyid': inspection.property_id}) }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</a>
+        </div>
+		</div>
+		
+		
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+            <!-- Modal -->
+  <div class="modal fade" id="confirmDeleteModal" role="dialog">
+    <div class="modal-dialog bdr-tommy">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-tommy">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Deleting User </h4>
+        </div>
+        <div class="modal-body">
+          <p>Are You Sure You want to Delete this User</p>
+        </div>
+        <div class="modal-footer">
+        <form method="post" action="#" id="deleteUserForm">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" id="confirmDeleteBtn" class="btn red" href="#"><i class="fa fa-minus-circle" aria-hidden="true"></i> Confirm Delete</a>
+          {{ csrf.field | raw }}
+       </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<div class="portlet light sub-actionbar">
+                <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.user.add') }}"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add User</a>
+</div>
+    <div class="row">
+
+                        <div class="col-md-12">
+                            <!-- BEGIN SAMPLE TABLE PORTLET-->
+                            <div class="portlet light ">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="icon-user font-green"></i>
+                                        <span class="caption-subject font-green bold uppercase">Admin Users</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="table-scrollable">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th> # </th>
+                                                    <th> User Name</th>
+                                                    <th> Email </th>
+                                                    <th> User Type </th>
+                                                    <th colspan="2"> Action </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for user in users %}
+                                                <tr>
+                                                    <td> {{ user.id }} </td>
+                                                    <td> {{ user.name }} </td>
+                                                    <td> {{ user.email }} </td>
+                                                    <td> {% if user.is_admin == 1 %} Administrator {% endif %}</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button style="margin-right:8px;" type="button" class="btn btn-danger deleteLink" data-link="{{ path_for('admin.user.delete',{'id':user.id}) }}">Delete</button>
+                                                            <a href="{{ path_for('admin.user.edit',{'id':user.id}) }}" class="btn btn-info">Edit</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END SAMPLE TABLE PORTLET-->
+                        </div>
+                    </div>
+{% endblock %}
+{% block adminuser %}
+      <script>
+            jQuery(document).ready(function($){
+                $(".deleteLink").on("click", function(){
+                    var link = $(this).data("link");
+                    $("#deleteUserForm").attr("action",link);
+                    $("#confirmDeleteModal").modal();
+                });
+            });
+        </script>
+{% endblock %}

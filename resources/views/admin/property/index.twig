@@ -1,0 +1,78 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="col-md-12 col-lg-12">
+            <!-- BEGIN SAMPLE TABLE PORTLET-->
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-home font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Properties</span>
+                    </div>
+
+                </div>
+                <div class="portlet-body">
+                    <div class="table-scrollable">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Address
+                                    </th>
+                                    <th>
+                                        Action
+                                    </th>
+                                    <th>
+                                        Current Balance
+                                    </th>
+                                    <th>
+                                        Status
+                                    </th>
+                                    <th>
+                                        Latest Entry
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for property in properties %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path_for('admin.search.property.view.propertyid', { propertyid: property.id }) }}">
+                                                {{ property.full_address }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ path_for('admin.inspections.add', { propertyid: property.id }) }}">
+                                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                                Add Inspection</a>
+                                        </td>
+                                        <td>
+                                            <div class="tooltip">{{ property.current_balance }}
+                                                <span class="tooltiptext"> <span class="tooltiptext--left">Opening Balance </span><span  class="tooltiptext--right">{{property.opening_balance}}</span></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="label label-sm label-{{ property.status }}">
+                                                {{ property.status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{ property.updated_at }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- END SAMPLE TABLE PORTLET-->
+            <div>
+                {{ properties.links | raw }}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

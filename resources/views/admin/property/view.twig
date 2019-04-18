@@ -1,0 +1,185 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+
+        <!-- Modal -->
+  <div class="modal fade" id="confirmDeleteModal" role="dialog">
+    <div class="modal-dialog bdr-tommy">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-tommy">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Deleting Inspection For Owner {{owner.full_name}}</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are You Sure You want to Delete this Inspection</p>
+        </div>
+        <div class="modal-footer">
+        <form method="post" action="#" id="deleteInspectionForm">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" id="confirmDeleteBtn" class="btn red" href="#"><i class="fa fa-minus-circle" aria-hidden="true"></i> Confirm Delete</a>
+          {{ csrf.field | raw }}
+       </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+        <div class="portlet light sub-actionbar">
+           {#  <a type="button" class="btn btn-tommy action-btn" href="{{ referer }}"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</a> #}
+                <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.inspections.add',{'propertyid': property.id}) }}"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add Inspection</a>
+        </div>
+        <div class="row">
+
+                       {#  <div class="col-md-2 ">
+                            <!-- BEGIN Portlet PORTLET-->
+                            <div class="portlet box tommy-bg">
+                                <div class="portlet-title text-color-primary">
+                                    <div class="caption">
+                                        <i class="fa fa-money fa-2x text-color-primary"></i>Owner Balance</div>
+                                </div>
+                                <div class="portlet-body">
+                                    <h2>$ {{ owner.opening_balance }}</h2>
+                                </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+                        </div> #}
+
+                        <div class="col-md-6 ">
+                            <!-- BEGIN Portlet PORTLET-->
+                            <div class="portlet box tommy-bg">
+                                <div class="portlet-title text-color-primary">
+                                    <div class="caption">
+                                        <i class="fa fa-id-card fa-2x text-color-primary"></i>Owner Details</div>
+                                </div>
+                                <div class="portlet-body owner">
+                                    <h2>Owner Code: {{ owner.code }}</h2>
+                                    <h2>Full Name : {{ owner.full_name }}</h2>
+                                    <h2>Address : {{ owner.address }}</h2>
+                                    <h2>Opening Balance : $ {{ owner.opening_balance }}</h2>
+                                    <h2>Current Balance : $ {{ owner.current_balance }}</h2>
+                                    <h2>Phone Home : <a href="tel:{{ owner.phone_home }}">{{ owner.phone_home }}</a></h2>
+                                    <h2>Phone Mobile : <a href="tel:{{ owner.phone_mobile }}">{{ owner.phone_mobile }}</a></h2>
+                                    <h2>Primary Email (Email 1) : <a href="mailto:{{ owner.email_1 }}">{{ owner.email_1 }}</a></h2>
+                                    <h2>Email 2 : <a href="mailto:{{ owner.email_2 }}">{{ owner.email_2 }}</a></h2>
+                                    <button class="btn blue sendPasswordLink" data-sendpasswordlink="{{ path_for('admin.sendpasswordlink',{'ownerId':owner.id, 'ownerCode':owner.code}) }}" type="button">Send Password Link</button>
+                                    <a href="{{ path_for('admin.setpassword',{'id':owner.id,'ownercode':owner.code }) }}" class="btn blue" type="button">Set Password Manually</a>
+                                </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+                        </div>
+
+                        {# <div class="col-md-4 ">
+                            <!-- BEGIN Portlet PORTLET-->
+                            <div class="portlet box tommy-bg">
+                                <div class="portlet-title text-color-primary">
+                                    <div class="caption">
+                                        <i class="fa fa-gift fa-2x text-color-primary"></i>Owner Balance</div>
+                                </div>
+                                <div class="portlet-body">
+                                    $ 202110
+                                </div>
+                            </div>
+                            <!-- END Portlet PORTLET-->
+                        </div> #}
+
+                    </div>
+        <div class="row">
+
+        <div class="col-md-6 col-lg-6">
+                            <!-- BEGIN SAMPLE TABLE PORTLET-->
+                            <div class="portlet box tommy-bg inspection">
+                            <div class="portlet-title text-color-primary">
+                                    <div class="caption">
+                                        <i class="fa fa-id-card fa-2x text-color-primary"></i>Inspections</div>
+                            </div>
+                            </div>
+                            <div class="portlet light ">
+
+                                <div class="portlet-body">
+                                    <div class="table-scrollable">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th> Date </th>
+                                                    <th>Short Statement</th>
+                                                    <th colspan="3"> Action </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% for inspection in property.inspections %}
+                                                <tr>
+                                                    <td> {{ inspection.date }}</td>
+
+                                                    <td> {{ inspection.short_statement }} </td>
+                                                    <td> <a class="view-link" href="{{ path_for('admin.inspections.view', { id: inspection.id, 'propertyid': property.id}) }}"><i class="fa fa-eye" aria-hidden="true"></i> View</a> </td>
+                                                    <td><a class="edit-alert" href="{{ path_for('admin.inspections.edit', { id: inspection.id, 'propertyid': property.id}) }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a></td>
+                                                    <td> <a class="delete-alert deleteLink" data-link="{{ path_for('admin.inspection.delete', { id: inspection.id, 'propertyid': property.id }) }}" href="javascript:void(0);"><i class="fa fa-minus-circle" aria-hidden="true"></i> Delete</a> </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END SAMPLE TABLE PORTLET-->
+                        </div>
+
+        </div>
+        <div class="portlet light sub-actionbar">
+           {#  <a type="button" class="btn btn-tommy action-btn" href="{{ referer }}"><i class="fa fa-chevron-left" aria-hidden="true"></i>Back</a> #}
+                <a type="button" class="btn btn-tommy action-btn" href="{{ path_for('admin.inspections.add',{'propertyid': property.id}) }}"><i class="fa fa-plus-circle" aria-hidden="true"></i>Add Inspection</a>
+        </div>
+{% endblock %}
+{% block admininspection %}
+      <script>
+            jQuery(document).ready(function($){
+                $(".deleteLink").on("click", function(){
+                    var link = $(this).data("link")
+                    $("#deleteInspectionForm").attr("action",link);
+                    $("#confirmDeleteModal").modal();
+                });
+            });
+        </script>
+{% endblock %}
+{% block ajaxSendPasswordLinkScript %}
+    <script>
+        jQuery(document).ready(function($){
+            $(".sendPasswordLink").on("click", function(){
+                var btn = $(this);
+                var defaultBtnHtml = btn.html();
+                var defaultBtnClass = btn.attr('class');
+                var successBtnClass = "btn btn-success";
+                var failureBtnClass = "btn btn-danger";
+                var url = btn.data("sendpasswordlink");
+              $.ajax({
+                url: url,
+                async:true,
+                beforeSend:function(){
+                    btn.html('Sending...');
+                    btn.prop('disabled',true);
+                    //alert("Sending");
+                },
+                success:function(result,textStatus,jqXHR){
+                    btn.addClass(successBtnClass).removeClass("blue");
+                    btn.html(defaultBtnHtml);
+                    btn.prop('disabled',false);
+                    console.log(result);
+                    console.log(textStatus);
+                    console.log(jqXHR);
+                },
+                statusCode: {
+                    404: function(){
+                    btn.addClass(failureBtnClass).removeClass("blue");
+                    btn.html('Password Link Failed');
+                    btn.prop('disabled',false);
+                    }
+                }
+              });
+            });
+        });
+    </script>
+{% endblock %}
+

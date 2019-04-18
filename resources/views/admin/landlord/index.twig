@@ -1,0 +1,149 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="col-md-12 col-lg-12">
+            <!-- BEGIN SAMPLE TABLE PORTLET-->
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-users font-white"></i>
+                        <span class="caption-subject font-white bold uppercase">Landlords</span>
+                    </div>
+
+                </div>
+                <div class="portlet-body">
+                    <div class="table-scrollable">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Full Name
+                                    </th>
+                                    <th>Contact</th>
+                                    <th>Current Balance</th>
+                                    {# <th>Account Activated</th> #}
+                                    <th colspan="3" class="column-centered">Actions</th>
+                                    <th>
+                                        Latest Entry
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for owner in owners %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ path_for('admin.landlords.viewproperties',{'ownercode':owner.code}) }}">{{ owner.full_name }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                                <div class="tooltip">Contact Details <span class="circle">></span> 
+                                                        <span class="tooltiptext">
+                                                        <span class="tooltiptext--left">Email </span><span  class="tooltiptext--right">{{owner.email_1}}</span></span>
+                                                    </div>
+                                            
+                                        </td>
+                                        <td>
+                                            {{ owner.current_balance }}
+                                        </td>
+                                        {# <td>
+                                                        <span class="label label-sm label-pending-{{ owner.is_pending }}"> {{ owner.pending() }} </span>
+                                                    </td> #}
+                                        <td>
+                                            <button class="btn blue sendWelcome" data-sendwelcome="{{ path_for('admin.sendwelcome',{'ownerId':owner.id, 'ownerCode':owner.code}) }}" type="button">Send Welcome</button>
+                                        </td>
+                                        <td>
+                                            <button class="btn blue sendPasswordLink" data-sendpasswordlink="{{ path_for('admin.sendpasswordlink',{'ownerId':owner.id, 'ownerCode':owner.code}) }}" type="button">Send Password Link</button>
+                                        </td>
+                                        <td>
+                                            <a href="{{ path_for('admin.setpassword',{'id':owner.id,'ownercode':owner.code }) }}" class="btn blue" type="button">Set Password</a>
+                                        </td>
+                                        <td>
+                                            {{ owner.updated_at }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- END SAMPLE TABLE PORTLET-->
+            <div>
+                {{ owners.links | raw }}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block ajaxSendPasswordLinkScript %}
+    <script>
+        jQuery(document).ready(function ($) {
+            $(".sendPasswordLink").on("click", function () {
+                var btn = $(this);
+                var defaultBtnHtml = btn.html();
+                var defaultBtnClass = btn.attr('class');
+                var successBtnClass = "btn btn-success";
+                var failureBtnClass = "btn btn-danger";
+                var url = btn.data("sendpasswordlink");
+                $.ajax({
+                    url: url,
+                    async: true,
+                    beforeSend: function () {
+                        btn.html('Sending...');
+                        btn.prop('disabled', true);
+                        //alert("Sending");
+                    },
+                    success: function (result, textStatus, jqXHR) {
+                        btn.addClass(successBtnClass).removeClass("blue");
+                        btn.html(defaultBtnHtml);
+                        btn.prop('disabled', false);
+                        console.log(result);
+                        console.log(textStatus);
+                        console.log(jqXHR);
+                    },
+                    statusCode: {
+                        404: function () {
+                            btn.addClass(failureBtnClass).removeClass("blue");
+                            btn.html('Password Link Failed');
+                            btn.prop('disabled', false);
+                        }
+                    }
+                });
+            });
+
+            $(".sendWelcome").on("click", function () {
+                var btn = $(this);
+                var defaultBtnHtml = btn.html();
+                var defaultBtnClass = btn.attr('class');
+                var successBtnClass = "btn btn-success";
+                var failureBtnClass = "btn btn-danger";
+                var url = btn.data("sendwelcome");
+                $.ajax({
+                    url: url,
+                    async: true,
+                    beforeSend: function () {
+                        btn.html('Sending...');
+                        btn.prop('disabled', true);
+                        //alert("Sending");
+                    },
+                    success: function (result, textStatus, jqXHR) {
+                        btn.addClass(successBtnClass).removeClass("blue");
+                        btn.html(defaultBtnHtml);
+                        btn.prop('disabled', false);
+                        console.log(result);
+                        console.log(textStatus);
+                        console.log(jqXHR);
+                    },
+                    statusCode: {
+                        404: function () {
+                            btn.addClass(failureBtnClass).removeClass("blue");
+                            btn.html('Message Failed');
+                            btn.prop('disabled', false);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}
